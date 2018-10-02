@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginVertical="400dp"
+        android:text="@string/start"
         android:id="@+id/startStopButton"/>
 
 </RelativeLayout>

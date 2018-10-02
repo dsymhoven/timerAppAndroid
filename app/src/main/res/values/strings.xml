@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">timerAppAndroid</string>
     <string name="choose_length_of_your_pause">Choose length of your pause</string>
+    <string name="start">start</string>
+    <string name="stop">stop</string>
+
 </resources>
