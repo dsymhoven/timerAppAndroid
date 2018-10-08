@@ -1,5 +1,6 @@
 package com.example.dsymhove.timerappandroid
 
+import android.app.DatePickerDialog
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -7,6 +8,7 @@ import android.os.Handler
 import android.os.Message
 import android.util.Log
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
     set(value) {
         timerTextView.text = value.toString()
+        secondsRemaining = value
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +58,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        displayValue = secondsRemaining
+        numberPicker.wrapSelectorWheel = true
+        numberPicker.minValue = 0
+        numberPicker.maxValue = 10
+        numberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
+            displayValue = newVal.toLong()
+        }
     }
 
     private fun startTimer() {
