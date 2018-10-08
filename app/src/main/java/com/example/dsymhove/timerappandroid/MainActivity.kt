@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private var secondsRemaining = 5L
     private var displayValue: Long
     get() {
-        return displayValue
+        return this.displayValue
     }
     set(value) {
         timerTextView.text = value.toString()
@@ -36,16 +36,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        timerTextView = findViewById<TextView>(R.id.timeTextView)
+        timerTextView = findViewById(R.id.timeTextView)
         val startStopButton = findViewById<Button>(R.id.startStopButton)
 
         setupUI()
 
-        startStopButton.setOnClickListener {v ->
+        startStopButton.setOnClickListener {
             Log.d("onClick", "Got here")
             if (startStopButton.text == getString(R.string.start)) {
                 startStopButton.setText(R.string.stop)
-                val startTime = System.currentTimeMillis()
                 startTimer()
             } else {
                 stopTimer()
@@ -59,11 +58,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupUI() {
         numberPicker.wrapSelectorWheel = true
-        numberPicker.minValue = 0
-        numberPicker.maxValue = 10
-        numberPicker.setOnValueChangedListener { picker, oldVal, newVal ->
-            displayValue = newVal.toLong()
+        numberPicker.maxValue = 6
+        numberPicker.displayedValues = arrayOf("30", "45", "60", "90", "120", "150", "180")
+
+        numberPicker.setOnValueChangedListener { picker, _, newVal ->
+            displayValue = picker.displayedValues[newVal].toLong()
         }
+
     }
 
     private fun startTimer() {
