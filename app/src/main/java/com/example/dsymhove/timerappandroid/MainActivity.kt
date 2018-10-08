@@ -6,14 +6,16 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Message
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
+import org.w3c.dom.Text
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private enum class TimerState {
         Stopped, Paused, Running
@@ -21,12 +23,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var timer: CountDownTimer
     private lateinit var timerTextView: TextView
+    private lateinit var textToSpeech: TextToSpeech
     private var timerState = TimerState.Stopped
     private var secondsRemaining = 5L
     private var displayValue: Long
-    get() {
-        return this.displayValue
-    }
+    get() = this.secondsRemaining
     set(value) {
         timerTextView.text = value.toString()
         secondsRemaining = value
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        textToSpeech = TextToSpeech(this, this)
         timerTextView = findViewById(R.id.timeTextView)
         val startStopButton = findViewById<Button>(R.id.startStopButton)
 
@@ -52,6 +54,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     private fun stopTimer() {
         startStopButton.setText(R.string.start)
     }
@@ -64,7 +68,6 @@ class MainActivity : AppCompatActivity() {
         numberPicker.setOnValueChangedListener { picker, _, newVal ->
             displayValue = picker.displayedValues[newVal].toLong()
         }
-
     }
 
     private fun startTimer() {
@@ -79,8 +82,16 @@ class MainActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 Log.d("tick", "tack")
                 displayValue = (millisUntilFinished) / 1000
+
+                if(displayValue == 15L) {
+                    textToSpeech.speak(displayValue.toString(), TextToSpeech.QUEUE_FLUSH, null, null)
+                }
             }
         }.start()
+    }
+
+    override fun onInit(status: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
 
